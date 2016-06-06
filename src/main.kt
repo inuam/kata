@@ -1,7 +1,8 @@
+import java.util.*
 
-fun headerPositions(text: String) {
+fun wordIndexes(text: String): List<IntRange> {
     println("text = ${text}")
-    val words = text.split(Regex("\\s+"))
+    val words = text.split(Regex("\\s+")).filter { !it.equals("") }
     var position = 0
 
     val headerCords: MutableList<IntRange> = mutableListOf()
@@ -13,18 +14,33 @@ fun headerPositions(text: String) {
         headerCords.add(range)
     }
 
-    println("words = ${words}")
-    println(headerCords)
-
-    for (intRange in headerCords) {
-        print(text.subSequence(intRange.start, intRange.endInclusive))
-    }
-
+//    println("headerCords = ${headerCords}")
+    return headerCords
 }
 
 data class Temperature(val day:Int, val min:Int, val max:Int)
 
 fun main(args: Array<String>) {
     println("Starting !!")
-    headerPositions("find all the words in this sentence")
+
+    val dailyTemperatures: MutableList<Temperature> = mutableListOf()
+
+    val wordIndexes = wordIndexes(data().split("\n").first())
+
+    val dayIndexes = wordIndexes.get(0)
+    val maxIndexes = wordIndexes.get(1)
+    val minIndexes = wordIndexes.get(2)
+
+    val days = data().split("\n").subList(1, 31)
+    for (day in days) {
+//        println("day = ${day}")
+        val dayOfMonth = day.substring(dayIndexes.start, dayIndexes.endInclusive)
+        val min = day.substring(minIndexes.start, minIndexes.endInclusive)
+        val max = day.substring(maxIndexes.start, maxIndexes.endInclusive)
+//        println("dayOfMonth = ${dayOfMonth}, ${min}, ${max}")
+        dailyTemperatures.add(Temperature(dayOfMonth.trim().toInt(), min.trim().toInt(), max.trim().toInt()))
+    }
+//    println("dailyTemperatures = ${dailyTemperatures}")
+    val toString = dailyTemperatures.maxBy { it.max - it.min }.toString()
+    println("dailyTemperatures = ${toString}")
 }
