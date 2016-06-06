@@ -1,3 +1,4 @@
+import java.util.*
 
 fun wordIndexes(text: String): List<IntRange> {
     println("text = ${text}")
@@ -27,18 +28,19 @@ fun main(args: Array<String>) {
     val wordIndexes = wordIndexes(data().split("\n").first())
 
     val dayIndexes = wordIndexes.get(0)
-    val minIndexes = wordIndexes.get(1)
-    val maxIndexes = wordIndexes.get(2)
+    val maxIndexes = wordIndexes.get(1)
+    val minIndexes = wordIndexes.get(2)
 
-    val days = data().split("\n").subList(2, 31)
+    val days = data().split("\n").subList(1, 31)
     for (day in days) {
-        println("day = ${day}")
+//        println("day = ${day}")
         val dayOfMonth = day.substring(dayIndexes.start, dayIndexes.endInclusive)
         val min = day.substring(minIndexes.start, minIndexes.endInclusive)
         val max = day.substring(maxIndexes.start, maxIndexes.endInclusive)
-        println("dayOfMonth = ${dayOfMonth}, ${min}, ${max}")
+//        println("dayOfMonth = ${dayOfMonth}, ${min}, ${max}")
         dailyTemperatures.add(Temperature(dayOfMonth.trim().toInt(), min.trim().toInt(), max.trim().toInt()))
     }
 //    println("dailyTemperatures = ${dailyTemperatures}")
-    
+    val toString = dailyTemperatures.maxBy { it.max - it.min }.toString()
+    println("dailyTemperatures = ${toString}")
 }
